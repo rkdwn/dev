@@ -8,9 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "config:dev": "cp -av envs/develop.env .env",
+    "config:local": "cp -av envs/local.env .env",
     "compose:build": "docker-compose build",
     "compose:push": "docker-compose push",
-    "deploy:dev": "run-s config:dev compose:build compose:push"
+    "deploy:dev": "run-s config:dev compose:build compose:push",
+    "start:local": "run-s config:local dev"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",

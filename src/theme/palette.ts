@@ -1,27 +1,30 @@
 import { Theme } from "@emotion/react";
 
 export const colorTheme = {
-  gray: "gray",
   main: "main",
-  warn: "warn",
-  darkGray: "darkGray"
+  mainDark: "mainDark",
+  second: "second",
+  secondDark: "secondDark",
+  gray: "gray"
 };
 
 export type ColorType = keyof typeof colorTheme;
 
 export interface Palette {
-  gray: string;
   main: string;
-  warn: string;
-  darkGray: string;
+  mainDark: string;
+  second: string;
+  secondDark: string;
+  gray: string;
 }
 
 const theme: Theme = {
   palette: {
-    gray: "#3A3A3A",
-    warn: "#F76969",
-    main: "#26D9FD",
-    darkGray: "#1A1A1A"
+    main: "#ffcbcb",
+    mainDark: "#ffb5b5",
+    second: "#407088",
+    secondDark: "#132743",
+    gray: "#3A3A3A"
   }
 };
 
