@@ -21,7 +21,7 @@ const StyledButton = styled("button")<{
   border: "none",
   borderRadius: 4,
   backgroundColor: theme.palette[color],
-  color: color === "darkGray" || color === "gray" ? "white" : "black",
+  color: color === "gray" ? "white" : "black",
   display: "inline-flex",
   justifyContent: "center",
   alignItems: "center",
