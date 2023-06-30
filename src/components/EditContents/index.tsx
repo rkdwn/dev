@@ -91,6 +91,12 @@ const EditContents = () => {
           >
             {"B"}
           </Button>
+          <Button
+            color={curUser.mealType === "C" ? "main" : "gray"}
+            onClick={() => handleClickMealType("C")}
+          >
+            {"C"}
+          </Button>
         </Container>
         <Typography fontSize={20}>{"에약 여부"}</Typography>
         <Container>
