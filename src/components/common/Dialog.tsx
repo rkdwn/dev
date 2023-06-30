@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import Container from "./Container";
 import Button from "./Button";
 import { CloseIcon } from "../Icons";
+import Icon from "./Icon";
+import { MouseEvent } from "react";
 
 const StyledDialogBackdrop = styled("div")({
   position: "fixed",
@@ -13,8 +15,7 @@ const StyledDialogBackdrop = styled("div")({
   zIndex: 100,
   display: "flex",
   justifyContent: "center",
-  alignItems: "center",
-  padding: 16
+  alignItems: "center"
 });
 
 type StyledDialogContainerProps = {
@@ -28,8 +29,9 @@ const StyledDialogContainer = styled("div")<StyledDialogContainerProps>(
     alignItems: "center",
     width: width,
     height: height,
-    backgroundColor: theme.palette.gray,
-    borderRadius: 8
+    backgroundColor: theme.palette.secondDark,
+    borderRadius: 8,
+    padding: 8
   })
 );
 
@@ -45,15 +47,24 @@ const Dialog = (props: DialogProps) => {
   const { open, width = "100%", height = "100%", onClose, children } = props;
   // TODO: 해당 컴포넌트 이외 부분 클릭 시 모달 닫히도록 구현
   if (!open) return null;
-  const handleClickClose = () => {
+  const handleClickClose = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     onClose();
   };
   return (
-    <StyledDialogBackdrop>
-      <StyledDialogContainer width={width} height={height}>
-        <Container fullWidth justifyContent={"flex-end"} padding={8}>
+    <StyledDialogBackdrop onClick={onClose}>
+      <StyledDialogContainer
+        width={width}
+        height={height}
+        onClick={e => {
+          e.stopPropagation();
+        }}
+      >
+        <Container fullWidth justifyContent={"flex-end"}>
           <Button variant={"icon"} onClick={handleClickClose}>
-            <CloseIcon />
+            <Icon>
+              <CloseIcon />
+            </Icon>
           </Button>
         </Container>
         {children}

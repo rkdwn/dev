@@ -54,6 +54,7 @@ const Button = (props: ButtonProps) => {
     children,
     color = "main",
     variant = "text",
+    disabled,
     ...rest
   } = props;
   //
@@ -64,7 +65,11 @@ const Button = (props: ButtonProps) => {
           {children}
         </StyledIconButton>
       ) : (
-        <StyledButton onClick={onClick} color={color} {...rest}>
+        <StyledButton
+          onClick={onClick}
+          color={disabled ? "gray" : color}
+          {...rest}
+        >
           {children}
         </StyledButton>
       )}
