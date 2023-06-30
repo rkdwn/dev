@@ -1,5 +1,5 @@
 # STAGE 1: install
-FROM docker.io/node:lts-alpine AS base
+FROM docker.io/node:16-alpine AS base
 
 RUN apk add --no-cache libc6-compat
 WORKDIR /base

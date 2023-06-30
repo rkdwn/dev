@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build:compile": "next build",
     "start": "next start",
     "lint": "next lint",
+    "build": "run-s config:deploy build:compile",
     "config:dev": "cp -av envs/develop.env .env",
     "config:local": "cp -av envs/local.env .env",
     "config:deploy": "cp -av envs/deploy.env .env",
