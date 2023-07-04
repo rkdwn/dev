@@ -67,7 +67,7 @@ export default function ApolloClientProvider({
 
   const _client = useMemo(() => {
     const httpLink = new BatchHttpLink({
-      uri: process.env.NEXT_PUBLIC_CF_API_URL,
+      uri: process.env.NEXT_PUBLIC_CF_API_URL + "/graphql",
       batchMax: 5,
       batchInterval: 50
     });
@@ -137,7 +137,7 @@ export default function ApolloClientProvider({
 
     return new ApolloClient({
       link: ApolloLink.from([retryLink, authLink, errorLink, splitLink]),
-      uri: process.env.NEXT_PUBLIC_CF_API_URL,
+      uri: process.env.NEXT_PUBLIC_CF_API_URL + "/graphql",
       cache: new InMemoryCache({
         addTypename: false
       }),

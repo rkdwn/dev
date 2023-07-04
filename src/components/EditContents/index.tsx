@@ -113,8 +113,10 @@ const EditContents = () => {
             {"예약 안함"}
           </Button>
         </Container>
+        <Container padding={`16px 0 0 0`}>
+          <Button onClick={handleSave}>{"저장"}</Button>
+        </Container>
       </Container>
-      <Button onClick={handleSave}>{"저장"}</Button>
     </ContentsBox>
   );
 };

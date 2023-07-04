@@ -9,7 +9,11 @@ import {
 } from "../Icons";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import DB from "@/utils/DB";
+import DB, { UserInfo } from "@/utils/DB";
+import { UPDATE_MEAL } from "@/queries/meal.queries";
+import { useMutation } from "@apollo/client";
+import { UpdateMeal, UpdateMealVariables } from "api";
+import { useApiClient } from "@/contexts/ApolloContext";
 
 const MenuBoxContents = styled(Container)(({ theme }) => ({
   width: "100%",
@@ -25,8 +29,11 @@ const TextContainer = styled(Container)(({ theme }) => ({
 
 const MenuBox = () => {
   const router = useRouter();
+  const client = useApiClient();
+
   const [openSetting, setOpenSetting] = useState<boolean>(false);
-  const [userId, setUserId] = useState<string | null>(null);
+  // const [userId, setUserId] = useState<string | null>(null);
+  const [curUser, setCurUser] = useState<UserInfo>();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -34,17 +41,47 @@ const MenuBox = () => {
       await db.open();
       const _result = await db.getCurUserInfo();
       if (_result.result) {
-        setUserId(_result.data.userId);
+        setCurUser(_result.data);
       }
     };
     fetchUserInfo();
   }, []);
 
+  const [updateMeal] = useMutation<UpdateMeal, UpdateMealVariables>(
+    UPDATE_MEAL,
+    {
+      client: client,
+      onCompleted: () => {
+        console.log("update meal success");
+        if (router.pathname === "/") router.reload();
+        else router.push("/");
+      }
+    }
+  );
+
   const hanldeClickReserve = () => {
-    //
+    if (!curUser) return;
+    updateMeal({
+      variables: {
+        updateMealInput: {
+          id: curUser.id,
+          mealType: curUser.mealType,
+          wantToReserve: true
+        }
+      }
+    });
   };
   const handleClickCancleReserve = () => {
-    //
+    if (!curUser) return;
+    updateMeal({
+      variables: {
+        updateMealInput: {
+          id: curUser.id,
+          mealType: curUser.mealType,
+          wantToReserve: false
+        }
+      }
+    });
   };
 
   const handleClickHome = () => {
@@ -52,8 +89,8 @@ const MenuBox = () => {
   };
 
   const handleClickEdit = () => {
-    if (userId) {
-      router.push("/edit", { query: { id: userId } });
+    if (curUser) {
+      router.push("/edit", { query: { id: curUser.userId } });
     }
   };
 
@@ -81,9 +118,13 @@ const MenuBox = () => {
           <HomeIcon />
         </Icon>
       </Button>
-      <Button variant={"icon"} onClick={handleClickEdit} disabled={!userId}>
+      <Button
+        variant={"icon"}
+        onClick={handleClickEdit}
+        disabled={!curUser?.userId}
+      >
         <Icon size={"small"} color={"black"}>
-          <EditIcon color={!userId ? "gray" : "black"} />
+          <EditIcon color={!curUser?.userId ? "gray" : "black"} />
         </Icon>
       </Button>
       <Button variant={"icon"} onClick={() => setOpenSetting(true)}>
