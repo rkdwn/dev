@@ -29,7 +29,7 @@ const StyledDialogContainer = styled("div")<StyledDialogContainerProps>(
     alignItems: "center",
     width: width,
     height: height,
-    backgroundColor: theme.palette.secondDark,
+    backgroundColor: "white",
     borderRadius: 8,
     padding: 8
   })
@@ -60,13 +60,6 @@ const Dialog = (props: DialogProps) => {
           e.stopPropagation();
         }}
       >
-        <Container fullWidth justifyContent={"flex-end"}>
-          <Button variant={"icon"} onClick={handleClickClose}>
-            <Icon>
-              <CloseIcon />
-            </Icon>
-          </Button>
-        </Container>
         {children}
       </StyledDialogContainer>
     </StyledDialogBackdrop>

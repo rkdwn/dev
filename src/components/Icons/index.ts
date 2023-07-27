@@ -1,5 +1,7 @@
 import AddIcon from "./AddIcon";
 import BackIcon from "./BackIcon";
+import BobIcon from "./Bob";
+import CalendarIcon from "./CalendarIcon";
 import CancelReserveIcon from "./CancelReserveIcon";
 import CircleIcon from "./CircleIcon";
 import CloseIcon from "./CloseIcon";
@@ -11,10 +13,14 @@ import MoreIcon from "./MoreIcon";
 import ReserveIcon from "./ReserveIcon";
 import SendIcon from "./SendIcon";
 import SettingIcon from "./SettingIcon";
+import SpoonIcon from "./SpoonIcon";
+import UserIcon from "./UserIcon";
 
 export {
   AddIcon,
   BackIcon,
+  BobIcon,
+  CalendarIcon,
   CancelReserveIcon,
   CircleIcon,
   CloseIcon,
@@ -25,5 +31,7 @@ export {
   MoreIcon,
   ReserveIcon,
   SendIcon,
-  SettingIcon
+  SettingIcon,
+  SpoonIcon,
+  UserIcon
 };

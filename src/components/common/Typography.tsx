@@ -1,6 +1,9 @@
+import { ColorType } from "@/theme/palette";
+import { Theme } from "@emotion/react";
 import styled from "@emotion/styled";
 
 type StyledTypographyProps = {
+  color?: ColorType | "inherit" | "white" | "black" | "disabled" | "default";
   bold?: boolean;
   fontSize?: React.CSSProperties["fontSize"];
   wrap?: React.CSSProperties["whiteSpace"];
@@ -15,11 +18,39 @@ const getBold = (bold?: boolean) => {
   return {};
 };
 
+const getColor = (
+  theme: Theme,
+  color: ColorType | "inherit" | "white" | "black" | "disabled" | "default"
+) => {
+  switch (color) {
+    case "white":
+      return "white";
+    case "black":
+      return "black";
+    case "inherit":
+      return color;
+    case "disabled":
+      return theme.palette.gray;
+    case "second":
+      return theme.palette.second;
+    case "mainDark":
+      return theme.palette.mainDark;
+    case "lightGray":
+      return theme.palette.lightGray;
+    case "main":
+      return theme.palette.main;
+    case "gray":
+      return theme.palette.gray;
+    default:
+      return "black";
+  }
+};
+
 const StyledTypography = styled("span")<StyledTypographyProps>(
   ({
     theme,
     bold = false,
-    color,
+    color = "inherit",
     wrap,
     fontSize = 24,
     paddingLeft = 0,
@@ -29,7 +60,7 @@ const StyledTypography = styled("span")<StyledTypographyProps>(
   }) => ({
     fontStretch: "normal",
     fontStyle: "normal",
-    color: color,
+    color: getColor(theme, color),
     margin: 0,
     paddingLeft,
     fontFamily: "Noto Sans",
@@ -51,6 +82,7 @@ const StyledTypography = styled("span")<StyledTypographyProps>(
 );
 
 export interface TyphographyProps extends React.ComponentProps<"span"> {
+  color?: ColorType | "inherit" | "white" | "black" | "disabled" | "default";
   bold?: boolean;
   fontSize?: React.CSSProperties["fontSize"];
   wrap?: React.CSSProperties["whiteSpace"];
@@ -63,7 +95,7 @@ export interface TyphographyProps extends React.ComponentProps<"span"> {
 const Typography = (props: TyphographyProps) => {
   const {
     children,
-    color = "textPrimary",
+    color = "inherit",
     bold = false,
     wrap,
     paddingLeft,

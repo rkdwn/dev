@@ -13,45 +13,38 @@ import {
 } from "api";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import LogoTitle from "../LogoTitle";
 import { Button, Container, Dialog, Typography } from "../common";
 import TextField from "../common/TextField";
 
-const Title = styled(Container)(({ theme }) => ({
-  width: "100%",
-  height: 52,
-  flexDirection: "row",
-  justifyContent: "center",
-  alignItems: "center",
-  backgroundColor: theme.palette.main
-}));
-
 const LoginBox = styled(Container)(({ theme }) => ({
+  width: 400,
   margin: 16,
   padding: 8,
   alignItems: "center",
   justifyContent: "center",
   borderRadius: 12,
-  backgroundColor: theme.palette.main,
+  backgroundColor: "white",
   flexDirection: "column"
 }));
 
 const InputContainer = styled(Container)(({ theme }) => ({
   width: "100%",
-  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "center",
   padding: "8px 0"
 }));
 
 const ButtonBox = styled(Container)(({ theme }) => ({
+  marginTop: 32,
   width: "100%",
-  position: "fixed",
   flexDirection: "column",
-  justifyContent: "space-around",
-  bottom: 0,
-  height: 100
+  gap: 8
 }));
 
 const WarnDialogContainer = styled(Container)(({ theme }) => ({
-  color: theme.palette.main,
+  width: "100%",
+  height: "100%",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center"
@@ -192,20 +185,25 @@ const Login = () => {
   };
 
   return (
-    <Container width={"100vw"} height={"100vh"} direction={"column"}>
-      <Title>
-        <Typography>{isSignUp ? "Sign Up" : "Login"}</Typography>
-      </Title>
+    <Container
+      width={"100vw"}
+      height={"100vh"}
+      direction={"column"}
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
       <LoginBox>
+        <LogoTitle />
         <InputContainer>
-          <Container alignItems={"center"}>
-            <Typography fontSize={20}>{"User ID *"}</Typography>
-            <Typography fontSize={12} paddingLeft={8}>
-              {"(식수예약 서비스 계정)"}
+          <Container>
+            <Typography fontSize={20}>{"사번"}</Typography>
+            <Typography color={"red"} paddingLeft={8}>
+              {"*"}
             </Typography>
           </Container>
           <TextField
             height={32}
+            width={240}
             required
             value={inputs.userId}
             placeholder={"1234"}
@@ -216,28 +214,40 @@ const Login = () => {
           />
         </InputContainer>
         <InputContainer>
-          <Container alignItems={"center"}>
-            <Typography fontSize={20}>password *</Typography>
-            <Typography fontSize={12} paddingLeft={8}>
-              {"(식수예약 서비스 계정, 암호 오류시 예약 실패)"}
+          <Container>
+            <Typography fontSize={20}>{"비밀번호"}</Typography>
+            <Typography color={"red"} paddingLeft={8}>
+              {"*"}
             </Typography>
           </Container>
           <TextField
             height={32}
+            width={240}
             required
             value={inputs.password}
             onChange={e => {
               const _filtered = filterString(e.target.value);
               setInputs(prev => ({ ...prev, password: _filtered }));
             }}
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                handleSubmit();
+              }
+            }}
           />
         </InputContainer>
         {isSignUp && (
           <>
             <InputContainer>
-              <Typography fontSize={20}>name *</Typography>
+              <Container>
+                <Typography fontSize={20}>{"닉네임"}</Typography>
+                <Typography color={"red"} paddingLeft={8}>
+                  {"*"}
+                </Typography>
+              </Container>
               <TextField
                 height={32}
+                width={240}
                 value={inputs.name}
                 onChange={e => {
                   const _filtered = filterString(e.target.value);
@@ -246,58 +256,10 @@ const Login = () => {
               />
             </InputContainer>
             <InputContainer>
-              <Container alignItems={"center"}>
-                <Typography fontSize={20}>{"Meal Type "}</Typography>
-                <Typography fontSize={12} paddingLeft={8}>
-                  {" (예약 하고자 하는 식수 선택)"}
-                </Typography>
-              </Container>
-              <Container justifyContent="space-around">
-                <Container
-                  onClick={() => {
-                    setInputs(prev => ({ ...prev, mealType: "A" }));
-                  }}
-                >
-                  <input
-                    name="mealType"
-                    type="radio"
-                    checked={inputs.mealType === "A"}
-                    onChange={() => {}}
-                  />
-                  <Typography>A</Typography>
-                </Container>
-                <Container
-                  onClick={() => {
-                    setInputs(prev => ({ ...prev, mealType: "B" }));
-                  }}
-                >
-                  <input
-                    name="mealType"
-                    type="radio"
-                    checked={inputs.mealType === "B"}
-                    onChange={() => {}}
-                  />
-                  <Typography>B</Typography>
-                </Container>
-                <Container
-                  onClick={() => {
-                    setInputs(prev => ({ ...prev, mealType: "C" }));
-                  }}
-                >
-                  <input
-                    name="mealType"
-                    type="radio"
-                    checked={inputs.mealType === "C"}
-                    onChange={() => {}}
-                  />
-                  <Typography>C</Typography>
-                </Container>
-              </Container>
-            </InputContainer>
-            <InputContainer>
               <Typography fontSize={20}>email</Typography>
               <TextField
                 height={32}
+                width={240}
                 value={inputs.email}
                 onChange={e => {
                   // const _filtered = filterString(e.target.value);
@@ -307,30 +269,43 @@ const Login = () => {
             </InputContainer>
           </>
         )}
-      </LoginBox>
-      <ButtonBox>
-        <Button onClick={handleSubmit}>{"GO!"}</Button>
-        <Button onClick={handleToggleSignUp}>
-          {isSignUp ? "Log in" : "Sign up"}
-        </Button>
-      </ButtonBox>
-      {openInputWarn && (
-        <Dialog
-          open={openInputWarn}
-          onClose={() => setOpenInputWarn(false)}
-          width={"80%"}
-          height={"20%"}
-        >
-          <WarnDialogContainer>
-            <Typography fontSize={20}>{"모든 항목을 입력해주세요."}</Typography>
-            <Typography fontSize={12}>
-              {`userId, password${
-                isSignUp ? ", name" : ""
-              } 항목은 필수값입니다.`}
+        <ButtonBox>
+          <Button onClick={handleSubmit} color={"main"}>
+            <Typography fontSize={14} color={"white"}>
+              {isSignUp ? "Sign up" : "Login"}
             </Typography>
-          </WarnDialogContainer>
-        </Dialog>
-      )}
+          </Button>
+          <Button onClick={handleToggleSignUp} color={"mainDark"}>
+            <Typography fontSize={14} color={"white"}>
+              {isSignUp ? "Go back" : "Sign up"}
+            </Typography>
+          </Button>
+        </ButtonBox>
+        {openInputWarn && (
+          <Dialog
+            open={openInputWarn}
+            onClose={() => setOpenInputWarn(false)}
+            width={350}
+            height={100}
+          >
+            <WarnDialogContainer>
+              <Typography fontSize={20}>
+                {"모든 항목을 입력해주세요."}
+              </Typography>
+              <Typography fontSize={12}>
+                {`사번, 비밀번호${
+                  isSignUp ? ", 닉네임" : ""
+                } 항목은 필수값입니다.`}
+              </Typography>
+              <Container width={"100%"} justifyContent={"flex-end"}>
+                <Button width={50} onClick={() => setOpenInputWarn(false)}>
+                  {"넹"}
+                </Button>
+              </Container>
+            </WarnDialogContainer>
+          </Dialog>
+        )}
+      </LoginBox>
       {dupKeyWarn && (
         <Dialog
           open={dupKeyWarn}

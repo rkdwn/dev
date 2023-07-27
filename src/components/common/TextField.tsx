@@ -22,33 +22,44 @@ const StyledFieldSet = styled("fieldset")<{
   width?: React.CSSProperties["width"];
   height?: React.CSSProperties["height"];
   error?: string | boolean;
-}>(({ theme, width = "100%", height = "100%", focus, error = false }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "4px 8px",
-  margin: 0,
-  width: width,
-  height: height,
-  border: `${focus ? 1.1 : 1}px solid ${
-    error
-      ? theme.palette.mainDark
-      : focus
-      ? theme.palette.secondDark
-      : theme.palette.second
-  }`,
-  boxSizing: "border-box",
-  borderRadius: 6,
-  "&:hover": {
+  disabled?: boolean;
+}>(
+  ({
+    theme,
+    disabled = false,
+    width = "100%",
+    height = "100%",
+    focus,
+    error = false
+  }) => ({
+    display: "flex",
+    backgroundColor: disabled ? theme.palette.blueGray : "unset",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "4px 8px",
+    margin: 0,
+    width: width,
+    height: height,
     border: `${focus ? 1.1 : 1}px solid ${
       error
-        ? theme.palette.mainDark
+        ? theme.palette.error
         : focus
-        ? theme.palette.secondDark
-        : theme.palette.second
-    }`
-  }
-}));
+        ? theme.palette.second
+        : theme.palette.gray
+    }`,
+    boxSizing: "border-box",
+    borderRadius: 6,
+    "&:hover": {
+      border: `${focus ? 1.1 : 1}px solid ${
+        error
+          ? theme.palette.error
+          : focus
+          ? theme.palette.second
+          : theme.palette.gray
+      }`
+    }
+  })
+);
 
 const StyledInputField = styled("input")<{
   textDirection: "left" | "right";
@@ -85,6 +96,7 @@ const TextField = (props: TextFieldProps) => {
     textDirection = "left",
     color,
     endIcon,
+    disabled,
     ...rest
   } = props;
   const [focus, setFocus] = React.useState(false);
@@ -95,7 +107,13 @@ const TextField = (props: TextFieldProps) => {
   };
 
   return (
-    <StyledFieldSet focus={focus} width={width} height={height} error={error}>
+    <StyledFieldSet
+      focus={focus}
+      width={width}
+      height={height}
+      error={error}
+      disabled={disabled}
+    >
       <StyledInputField
         height={height}
         textDirection={textDirection}
@@ -105,6 +123,7 @@ const TextField = (props: TextFieldProps) => {
           onBlur(e);
         }}
         onChange={onChange}
+        disabled={disabled}
         {...rest}
       />
       {endIcon && <>{endIcon}</>}

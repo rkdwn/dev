@@ -46,7 +46,7 @@ const Edit = () => {
       <Title>
         <Typography>{"대기 설정 변경"}</Typography>
         <Button variant={"icon"} onClick={handleClickInfo}>
-          <Icon size={"xs"} color={"secondDark"}>
+          <Icon size={"xs"}>
             <InfoIcon />
           </Icon>
         </Button>

@@ -21,11 +21,7 @@ const Main = () => {
     checkUser();
   }, [router, checkUser]);
 
-  return (
-    <>
-      <Dashboard />
-    </>
-  );
+  return <Dashboard />;
 };
 
 export default Main;
