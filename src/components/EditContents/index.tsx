@@ -69,7 +69,7 @@ const EditContents = () => {
       });
       const db = new DB();
       await db.open();
-      await db.createUserInfo(curUser);
+      await db.upsertUserInfo(curUser);
     }
   };
 

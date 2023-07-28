@@ -1,6 +1,5 @@
 import { UserIcon } from "@/components/Icons";
-import { Container, Icon, Typography } from "@/components/common";
-import TextField from "@/components/common/TextField";
+import { Container, Icon, Typography, TextField } from "@/components/common";
 import { UserInfo } from "@/utils/DB";
 import styled from "@emotion/styled";
 

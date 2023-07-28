@@ -31,6 +31,8 @@ const getColor = (
       return color;
     case "disabled":
       return theme.palette.gray;
+    case "error":
+      return theme.palette.error;
     case "second":
       return theme.palette.second;
     case "mainDark":

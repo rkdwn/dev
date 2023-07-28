@@ -98,7 +98,7 @@ class DB {
     });
   };
 
-  public createUserInfo = async (params: UserInfo): Promise<Response> => {
+  public upsertUserInfo = async (params: UserInfo): Promise<Response> => {
     return new Promise((resolve, reject) => {
       const { id, userId, username, mealType, wantToReserve } = params;
       console.log("# check ", params);

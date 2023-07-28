@@ -1,51 +1,32 @@
 import { Container } from "@/components/common";
-import { useApiClient } from "@/contexts/ApolloContext";
-import { SEARCH_MEAL } from "@/queries/meal.queries";
-import DB from "@/utils/DB";
-import { useLazyQuery } from "@apollo/client";
 import styled from "@emotion/styled";
-import {
-  SearchMeals_searchMeals,
-  SearchMeals,
-  SearchMealsVariables
-} from "api";
-import { useState, useEffect } from "react";
+import { SearchMeals_searchMeals } from "api";
 import Meals from "../Meals";
+import { useEffect, useState } from "react";
+import DB, { UserInfo } from "@/utils/DB";
 
 const ReserveStatusBox = styled(Container)(({ theme }) => ({
   width: "75%",
-  height: "100%"
+  height: "100%",
+  overflow: "hidden"
   // minWidth: 720
 }));
 
 const MealsContents = styled(Container)(({ theme }) => ({
   width: "100%",
   padding: 8,
-  flexDirection: "column"
+  flexDirection: "column",
+  overflowY: "scroll"
 }));
 
-const ReserveStatus = () => {
-  const client = useApiClient();
-  const [meals, setMeals] = useState<SearchMeals_searchMeals[]>([]);
+type Props = {
+  meals: SearchMeals_searchMeals[];
+};
 
-  const [getMeals] = useLazyQuery<SearchMeals, SearchMealsVariables>(
-    SEARCH_MEAL,
-    {
-      client: client,
-      variables: {
-        searchMealsInput: {
-          args: {}
-        }
-      },
-      onCompleted: data => {
-        console.log("data", data.searchMeals);
-        setMeals(data.searchMeals);
-      },
-      onError(error) {
-        console.log("error", error);
-      }
-    }
-  );
+const ReserveStatus = (props: Props) => {
+  const { meals } = props;
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,17 +34,25 @@ const ReserveStatus = () => {
       await db.open();
       const _userInfo = await db.getCurUserInfo();
       if (!_userInfo.result) return;
-      getMeals();
+      setUserInfo(_userInfo.data);
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (userInfo) {
+      setSelected(userInfo.id);
+    }
+  }, [userInfo]);
   //
   return (
     <ReserveStatusBox>
       <MealsContents>
         <Meals meals={null} />
         {meals.map(meal => {
-          return <Meals meals={meal} key={meal.id} />;
+          return (
+            <Meals meals={meal} key={meal.id} selected={meal.id === selected} />
+          );
         })}
       </MealsContents>
     </ReserveStatusBox>

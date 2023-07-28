@@ -1,15 +1,14 @@
+import { Container, Typography } from "@/components/common";
 import styled from "@emotion/styled";
-import { Container, Icon, Typography } from "@/components/common";
 import { SearchMeals_searchMeals } from "api";
-import { CloseIcon, CircleIcon } from "../Icons";
 
 const MealContentBox = styled(Container)(({ theme }) => ({
   width: "100%",
   marginBottom: 8
 }));
 
-const MealBox = styled(Container)<{ isHeader?: boolean }>(
-  ({ theme, isHeader = false }) => ({
+const MealBox = styled(Container)<{ isHeader?: boolean; isSelected?: boolean }>(
+  ({ theme, isHeader = false, isSelected = false }) => ({
     border: `1px solid ${
       isHeader ? theme.palette.blueGray : theme.palette.mainDark
     }`,
@@ -20,52 +19,73 @@ const MealBox = styled(Container)<{ isHeader?: boolean }>(
     alignItems: "center",
     justifyContent: "space-around",
     padding: 4,
-    backgroundColor: isHeader ? theme.palette.blueGray : "unset"
+    backgroundColor: isHeader
+      ? theme.palette.blueGray
+      : isSelected
+      ? theme.palette.second
+      : "unset"
   })
 );
 
+const MealContainer = styled(Container)(({ theme }) => ({
+  width: "33%",
+  justifyContent: "center",
+  alignItems: "center"
+}));
 const MealTypograpy = styled(Typography)(({ theme }) => ({
-  fontSize: 20
+  fontSize: 16
 }));
 
+const HeaderContainer = styled(Container)(({ theme }) => ({
+  width: "33%",
+  justifyContent: "center",
+  alignItems: "center"
+}));
 const HeadTypograpy = styled(Typography)(({ theme }) => ({
-  fontSize: 24
+  fontSize: 20
 }));
 
 type Props = {
   meals: SearchMeals_searchMeals | null;
+  selected?: boolean;
 };
 
 const Meals = (props: Props) => {
-  const { meals } = props;
+  const { meals, selected } = props;
   if (!meals) {
     return (
       <MealContentBox>
         <MealBox isHeader>
-          <Container width={100} style={{ overflow: "hidden" }}>
+          <HeaderContainer style={{ overflow: "hidden" }}>
             <HeadTypograpy>{"이름"}</HeadTypograpy>
-          </Container>
-          <HeadTypograpy>{"메뉴"}</HeadTypograpy>
-          <HeadTypograpy>{"예약 여부"}</HeadTypograpy>
+          </HeaderContainer>
+          <HeaderContainer>
+            <HeadTypograpy>{"메뉴"}</HeadTypograpy>
+          </HeaderContainer>
+          <HeaderContainer>
+            <HeadTypograpy>{"예약 여부"}</HeadTypograpy>
+          </HeaderContainer>
         </MealBox>
       </MealContentBox>
     );
   }
   return (
     <MealContentBox>
-      <MealBox>
-        <Container width={100} style={{ overflow: "hidden" }}>
+      <MealBox isSelected={selected}>
+        <MealContainer style={{ overflow: "hidden" }}>
           <MealTypograpy>{meals.name}</MealTypograpy>
-        </Container>
-        <MealTypograpy>{meals.mealType}</MealTypograpy>
+        </MealContainer>
+        <MealContainer>
+          <MealTypograpy>{meals.mealType}</MealTypograpy>
+        </MealContainer>
         {meals.wantToReserve ? (
-          <Icon color={"mainDark"}>
-            <CircleIcon />
-          </Icon>
+          <MealContainer>
+            <MealTypograpy>{"O"}</MealTypograpy>
+          </MealContainer>
         ) : (
-          <Icon color={"mainDark"}>
-            <CloseIcon />
-          </Icon>
+          <MealContainer>
+            <MealTypograpy>{"X"}</MealTypograpy>
+          </MealContainer>
         )}
       </MealBox>
     </MealContentBox>

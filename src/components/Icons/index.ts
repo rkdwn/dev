@@ -8,6 +8,7 @@ import CloseIcon from "./CloseIcon";
 import EditIcon from "./EditIcon";
 import HomeIcon from "./HomeIcon";
 import InfoIcon from "./InfoIcon";
+import LogoutIcon from "./LogoutIcon";
 import MenuIcon from "./MenuIcon";
 import MoreIcon from "./MoreIcon";
 import ReserveIcon from "./ReserveIcon";
@@ -27,6 +28,7 @@ export {
   EditIcon,
   HomeIcon,
   InfoIcon,
+  LogoutIcon,
   MenuIcon,
   MoreIcon,
   ReserveIcon,

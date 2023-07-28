@@ -63,13 +63,14 @@ const StyledFieldSet = styled("fieldset")<{
 
 const StyledInputField = styled("input")<{
   textDirection: "left" | "right";
-}>(({ theme, textDirection }) => ({
+  disabled?: boolean;
+}>(({ theme, textDirection, disabled = false }) => ({
   width: "100%",
   height: "100%",
   border: "none",
   outline: "none",
   resize: "none",
-  color: "black",
+  color: disabled ? theme.palette.gray : "black",
   fontSize: 18,
   fontWeight: 400,
   lineHeight: "normal",

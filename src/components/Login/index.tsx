@@ -14,8 +14,7 @@ import {
 import { useRouter } from "next/router";
 import { useState } from "react";
 import LogoTitle from "../LogoTitle";
-import { Button, Container, Dialog, Typography } from "../common";
-import TextField from "../common/TextField";
+import { Button, Container, Dialog, Typography, TextField } from "../common";
 
 const LoginBox = styled(Container)(({ theme }) => ({
   width: 400,
@@ -102,7 +101,7 @@ const Login = () => {
     // 로그인 성공
     const db = new DB();
     await db.open();
-    const _createResult = await db.createUserInfo({
+    const _createResult = await db.upsertUserInfo({
       id: _meal.id,
       userId: _meal.loginId,
       username: _meal.name,
@@ -197,7 +196,7 @@ const Login = () => {
         <InputContainer>
           <Container>
             <Typography fontSize={20}>{"사번"}</Typography>
-            <Typography color={"red"} paddingLeft={8}>
+            <Typography color={"error"} paddingLeft={8}>
               {"*"}
             </Typography>
           </Container>
@@ -216,7 +215,7 @@ const Login = () => {
         <InputContainer>
           <Container>
             <Typography fontSize={20}>{"비밀번호"}</Typography>
-            <Typography color={"red"} paddingLeft={8}>
+            <Typography color={"error"} paddingLeft={8}>
               {"*"}
             </Typography>
           </Container>
@@ -241,7 +240,7 @@ const Login = () => {
             <InputContainer>
               <Container>
                 <Typography fontSize={20}>{"닉네임"}</Typography>
-                <Typography color={"red"} paddingLeft={8}>
+                <Typography color={"error"} paddingLeft={8}>
                   {"*"}
                 </Typography>
               </Container>

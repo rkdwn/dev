@@ -28,8 +28,8 @@ type Props = {
 const ReserveShortcut = (props: Props) => {
   const { userInfo, handleReserve } = props;
   //
-  const reserveColor = userInfo?.wantToReserve ? "main" : "disabled";
-  const cancelReserveColor = userInfo?.wantToReserve ? "disabled" : "main";
+  const reserveColor = userInfo?.wantToReserve ? "mainDark" : "disabled";
+  const cancelReserveColor = userInfo?.wantToReserve ? "disabled" : "mainDark";
 
   const handleClick = (input: boolean) => {
     if (!userInfo || input === userInfo.wantToReserve) return;
@@ -74,7 +74,6 @@ const ReserveShortcut = (props: Props) => {
           </Icon>
         </ReserveTile>
       </Container>
-      <div>{"ReserveShortcut"}</div>
     </Container>
   );
 };
