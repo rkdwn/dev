@@ -12,7 +12,7 @@ import {
   SearchMealsVariables
 } from "api";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import LogoTitle from "../LogoTitle";
 import { Button, Container, Dialog, Typography, TextField } from "../common";
 
@@ -63,11 +63,29 @@ const INIT_INPUTS: InputsType = {
   name: ""
 };
 
+interface Dialog {
+  loginWarn: {
+    open: boolean;
+    message: string;
+  };
+}
+
+const DIALOG: Dialog = {
+  loginWarn: {
+    open: false,
+    message: ""
+  }
+};
+
+type DialogKey = keyof Dialog;
+type DialogValue = Dialog[DialogKey];
+
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [inputs, setInputs] = useState<InputsType>(INIT_INPUTS);
   const [openInputWarn, setOpenInputWarn] = useState(false);
   const [dupKeyWarn, setDupKeyWarn] = useState(false);
+  const [dialog, setDialog] = useState<Dialog>(DIALOG);
 
   const client = useApiClient();
   const router = useRouter();
@@ -77,6 +95,13 @@ const Login = () => {
     {
       client: client
     }
+  );
+
+  const handleDialog = useCallback(
+    (key: DialogKey, value: DialogValue) => {
+      setDialog(prev => ({ ...prev, [key]: value }));
+    },
+    [setDialog]
   );
 
   const onLogin = async () => {
@@ -91,11 +116,17 @@ const Login = () => {
     });
     const _meal = _result.data?.searchMeals[0];
     if (!_meal) {
-      alert("존재하지 않는 아이디입니다.");
+      handleDialog("loginWarn", {
+        open: true,
+        message: "존재하지 않는 아이디입니다."
+      });
       return;
     }
     if (_meal.loginPassword !== inputs.password) {
-      alert("비밀번호가 일치하지 않습니다.");
+      handleDialog("loginWarn", {
+        open: true,
+        message: "비밀번호가 일치하지 않습니다."
+      });
       return;
     }
     // 로그인 성공
@@ -109,7 +140,10 @@ const Login = () => {
       wantToReserve: _meal.wantToReserve
     });
     if (!_createResult.result) {
-      alert("유저정보 확인 실패");
+      handleDialog("loginWarn", {
+        open: true,
+        message: "유저정보 확인 실패"
+      });
       return;
     }
     router.push("/");
@@ -305,6 +339,30 @@ const Login = () => {
           </Dialog>
         )}
       </LoginBox>
+      {dialog.loginWarn.open && (
+        <Dialog
+          open={dialog.loginWarn.open}
+          onClose={() =>
+            handleDialog("loginWarn", { open: false, message: "" })
+          }
+          width={350}
+          height={80}
+        >
+          <WarnDialogContainer>
+            <Typography fontSize={20}>{dialog.loginWarn.message}</Typography>
+            <Container width={"100%"} justifyContent={"flex-end"}>
+              <Button
+                width={50}
+                onClick={() =>
+                  handleDialog("loginWarn", { open: false, message: "" })
+                }
+              >
+                {"넹"}
+              </Button>
+            </Container>
+          </WarnDialogContainer>
+        </Dialog>
+      )}
       {dupKeyWarn && (
         <Dialog
           open={dupKeyWarn}

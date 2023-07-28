@@ -1,6 +1,8 @@
+import DB from "@/utils/DB";
 import styled from "@emotion/styled";
+import { useRouter } from "next/router";
+import { BobIcon, LogoutIcon } from "../Icons";
 import { Button, Container, Icon, Typography } from "../common";
-import { BobIcon, LogoutIcon, SettingIcon } from "../Icons";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   position: "fixed",
@@ -11,6 +13,13 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const LogoTitle = () => {
+  const router = useRouter();
+  const handleLogout = async () => {
+    const db = new DB();
+    await db.open();
+    await db.clearUserInfo();
+    router.push("/login");
+  };
   //
   return (
     <Container
@@ -25,14 +34,16 @@ const LogoTitle = () => {
       <Typography fontSize={32} bold paddingLeft={8}>
         {"밥텍"}
       </Typography>
-      <StyledButton>
-        <Icon color={"white"} size={20} noPadding>
-          <LogoutIcon />
-        </Icon>
-        <Typography fontSize={14} color={"white"} bold paddingLeft={4}>
-          {"Logout"}
-        </Typography>
-      </StyledButton>
+      {router.pathname !== "/login" && (
+        <StyledButton onClick={handleLogout}>
+          <Icon color={"white"} size={20} noPadding>
+            <LogoutIcon />
+          </Icon>
+          <Typography fontSize={14} color={"white"} bold paddingLeft={4}>
+            {"Logout"}
+          </Typography>
+        </StyledButton>
+      )}
     </Container>
   );
 };
