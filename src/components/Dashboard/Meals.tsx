@@ -14,7 +14,7 @@ const MealBox = styled(Container)<{ isHeader?: boolean; isSelected?: boolean }>(
     }`,
     borderRadius: "5px",
     width: "100%",
-    height: 52,
+    height: 32,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
@@ -22,7 +22,7 @@ const MealBox = styled(Container)<{ isHeader?: boolean; isSelected?: boolean }>(
     backgroundColor: isHeader
       ? theme.palette.blueGray
       : isSelected
-      ? theme.palette.second
+      ? "rgba(122, 64, 255, 0.10)"
       : "unset"
   })
 );

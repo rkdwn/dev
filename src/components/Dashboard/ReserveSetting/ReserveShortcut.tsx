@@ -1,5 +1,5 @@
 import { BobIcon, CalendarIcon, CancelReserveIcon } from "@/components/Icons";
-import { Button, Container, Icon, Typography } from "@/components/common";
+import { Container, Icon, Typography } from "@/components/common";
 import { UserInfo } from "@/utils/DB";
 import styled from "@emotion/styled";
 
