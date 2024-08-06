@@ -15,7 +15,7 @@
     "compose:push": "docker-compose push",
     "deploy:dev": "run-s config:deploy compose:build compose:push",
     "download:schema": "eval $(grep '^NEXT_PUBLIC_CF_API_URL' .env) && yarn apollo service:download --endpoint=$NEXT_PUBLIC_CF_API_URL schema.json",
-    "gen:type": "yarn apollo client:codegen types/api.d.ts --includes=src/queries/*.tsx --no-addTypename --localSchemaFile=schema.json --target typescript --outputFlat --passthroughCustomScalars",
+    "gen:type": "pnpm apollo client:codegen types/api.d.ts --includes=src/queries/*.tsx --no-addTypename --localSchemaFile=schema.json --target typescript --outputFlat --passthroughCustomScalars",
     "type": "run-s download:schema gen:type",
     "start:local": "run-s config:local dev"
   },
